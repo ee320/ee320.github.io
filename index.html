@@ -1,7 +1,7 @@
 <html>
 	<head>
 		<style type="text/css">
-			body{font-family: sans-serif;}
+			body{font-family: sans-serif;background-image: url('C:\Users\Hp1\Desktop\ee320.github.io-master\Pictures\image4.jpg');}
 			p{display: inline-block;}
 			img{display: block;}
 			.container{width: 90%;position absolute;margin: auto;}
@@ -16,17 +16,17 @@
 	</head>
 	<body>
 		<div class="container">
-			<div class="title">Audio Class Histogram</div>
+			<div class="title"><font color="green" size="10">Audio Class Histogram</font></div>
 
 			<div class="authors">
-
+                <font color="black" size="2">
 				<!-- Start edit here  -->
 				<p>Ritwik Abhishek, Roll No.: 150102057, Branch: ECE</p>; &nbsp; &nbsp;
 				<p>Rana Randheer, Roll No.: 150102056, Branch: ECE</p>; &nbsp; &nbsp;
 				<p>Nayab Anjum, Roll No.: 150102039, Branch: ECE</p>; &nbsp; &nbsp;
-				<p>Gongale Nishant, Roll No.: 150102021, Branch: ECE</p>; &nbsp; &nbsp;
+				<p>Nishant Gongale, Roll No.: 150102021, Branch: ECE</p>; &nbsp; &nbsp;
 				<!-- Stop edit here -->
-
+               </font>
 			</div>
 
 
@@ -35,7 +35,7 @@
 				<div class="text">
 
 					<!-- Start edit here  -->
-					We are creating a histogram of given audio file. The audio file can contain Music, Speech, Noise, and silence
+					A speech, music, silence, noise discrimination is presented in this project. The proposed algorithm needs no training phase,. and it classifies audio stream into 4 classes- speech, music, silence and noise.
 					<!-- Stop edit here -->
 
 				</div>
@@ -46,7 +46,9 @@
 				<div class="text">
 
 					<!-- Start edit here  -->
-					Write a introduction to your project here.
+					 Over the last several years, major efforts have been made to develop methods for extracting information from audio visual media
+					 In this project we are concentrating on classification of an audio signal into vocal, music and silence and we are creating audio class histogram for the same. 
+
 					<!-- Stop edit here -->
 
 				</div>
@@ -56,7 +58,8 @@
 					<div class="text">
 
 						<!-- Start edit here  -->
-						Write something here.
+							Given an audio file, we have to extract features and use them to segment and classsify the audio data into speech, music, silence and noise.
+							And to plot a histogram for the same
 						<!-- Stop edit here -->
 
 					</div>
@@ -67,8 +70,8 @@
 					<div class="image">
 
 						<!-- Start edit here  -->
-						Block diagram of the system. All images must be put in a Pictures folder. An example image
-						<img src="Pictures/example.png" alt="This text displays when the image is umavailable" width="300px" height=""/>
+						            Block diagram of the system.
+						<img src="Pictures/example.png" alt="This text displays when the image is umavailable" width="700px" height="400px"/>
 						<!-- Stop edit here -->
 
 					</div>
@@ -78,8 +81,9 @@
 					<div class="text">
 
 						<!-- Start edit here  -->
-						Write something here.
-						<!-- Stop edit here -->
+						[1] C. Panagiotakis and G. Tziritas, a speech/music discriminator based on rms and zero-crossings, ieee transactions on multimedia, vol. 7, no. 1, feb. 2005.
+						 <p>
+ 						[2]  C. Panagiotakis and G. Tziritas, a speech/music discriminator based on rms and zero-crossings, European singnal processing conference, 2002</p>									<!-- Stop edit here -->
 
 					</div>
 				</div>
@@ -88,7 +92,7 @@
 					<div class="text">
 
 						<!-- Start edit here  -->
-						Describe your approach briefly here.
+						In the first step the audio input is initially cut into overlapping frames of audio samples and for each frame a parametric feature vector is extracted	First silence segments are extracted from audio stream by using energy and for differentiating between music and speech we are using 5 feature vectors which are derived from RMS and ZCR. . The feature vector sequence is afterwards driven to the segmentation stage, where itl well known and extensively parameters are the Normalized RMS variance, the probability of null zero-crossings,joint RMS/ZC measure,Void intervals frequency and Maximal mean frequency.
 						<!-- Stop edit here -->
 
 					</div>
@@ -98,7 +102,7 @@
 					<div class="text">
 
 						<!-- Start edit here  -->
-						Write something here.
+						This project report is organized as follows. 
 						<!-- Stop edit here -->
 
 					</div>
@@ -123,7 +127,7 @@
 					<div class="text">
 
 						<!-- Start edit here  -->
-						Write something here.
+						We collected from various resources from internet, we also generated some dataset. Our dataset includes various genre of music, voice samples of male and female.
 						<!-- Stop edit here -->
 
 					</div>
@@ -133,7 +137,7 @@
 					<div class="text">
 
 						<!-- Start edit here  -->
-						Write something here.
+						For above mentioned dataset we are getting an accuracy of around 85%.
 						<!-- Stop edit here -->
 
 					</div>
