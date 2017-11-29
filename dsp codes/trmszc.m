@@ -1,15 +1,15 @@
-function [classif]=trmszc(start,finish,filename)
+function [classif]=tr(start,finish,filename)
 start=0;
 classif = [];
 
 [Y1,FS,NBITS,OPTS]=wavread(filename); % y1 is sampled data, sample rate(FS) in Hz, bitsper sample(NBITS) 
 duration = finish-start;
-kanalia = size(Y1,2);
+kkk = size(Y1,2);
 arxh = start*FS;
 m = 100;
 timeread = 1;
 
-Vt = 0*[1:50];Vta = [];Vtz = 0*[1:50];Vtz1 = 0*[1:50];Vtaz = [];Vtaz1 = [];shma = [];temp = [];
+Vt = 0*[1:50];Vta = [];Vtz = 0*[1:50];Vtz1 = 0*[1:50];Wtaz = [];Wtaz1 = [];shma = [];temp = [];
 y = 0;
 py = [1:1:50];
 
@@ -24,7 +24,7 @@ aVt = [];
 %READING - Computation of RMS-ZC-RMS*ZC per 20 msec
 for i=1:floor(duration/timeread),
    [Ys,FS,NBITS,OPTS]=wavread(filename,[arxh+1+(i-1)*timeread*FS  arxh+i*timeread*FS]);
-   if kanalia==2,
+   if kkk==2,
       Ys = Ys(:,1)+Ys(:,2);
    end
    for j=1:timeread*50,
@@ -45,8 +45,8 @@ for i=1:floor(duration/timeread),
    m = mean(Vt);
    v = var(Vt);
    Vta = [Vta Vt];
-   Vtaz = [Vtaz Vtz];
-   Vtaz1 = [Vtaz1 Vtz1];
+   Wtaz = [Wtaz Vtz];
+   Wtaz1 = [Wtaz1 Vtz1];
    
    if (v ~= 0 & m ~= 0)
       b(i) = v/m;
@@ -57,7 +57,7 @@ for i=1:floor(duration/timeread),
    end
 end
 
-%Computation of  KVRMS
+%Computation of  KVRMS, calculating nRMS varience
 l = length(Vta);
 ftm(1) = mean(Vta(1:50));
 ftv(1) = var(Vta(1:50));
@@ -75,23 +75,23 @@ end
 l = floor(duration/timeread);
 m = mean(kvrms);
 v = var(kvrms);
-b1111 = v/m;
+b1111 = v/m; % exact NRMS
 a111 = (m/b1111)-1;
 
-%computation of similarity (omiot) between windows  based on RMS distribution 
+%computation of similarity between windows  based on RMS distribution 
 for i=2:l,
    k = (a(i)+a(i-1)+2)/2;
-   omiot1(i-1) = ((2/(b(i-1)+b(i)))^k)*(b(i-1)^((a(i)+1)/2))*(b(i)^((a(i-1)+1)/2))*gamma(k)/(sqrt(gamma(a(i-1)+1)*gamma(a(i)+1)));     
-   if omiot1(i-1) ~= omiot1(i-1),
-      omiot1(i-1) = 0;
+   somiot1(i-1) = ((2/(b(i-1)+b(i)))^k)*(b(i-1)^((a(i)+1)/2))*(b(i)^((a(i-1)+1)/2))*gamma(k)/(sqrt(gamma(a(i-1)+1)*gamma(a(i)+1)));     
+   if somiot1(i-1) ~= somiot1(i-1),
+      somiot1(i-1) = 0;
    end 
 end
 
 for i=3:l,
    k = (a(i)+a(i-2)+2)/2;
-   omiot2(i-2) = ((2/(b(i-2)+b(i)))^k)*(b(i-2)^((a(i)+1)/2))*(b(i)^((a(i-2)+1)/2))*gamma(k)/(sqrt(gamma(a(i-2)+1)*gamma(a(i)+1)));     
-   if omiot2(i-2) ~= omiot2(i-2),
-      omiot2(i-2) = 0;
+   somiot2(i-2) = ((2/(b(i-2)+b(i)))^k)*(b(i-2)^((a(i)+1)/2))*(b(i)^((a(i-2)+1)/2))*gamma(k)/(sqrt(gamma(a(i-2)+1)*gamma(a(i)+1)));     
+   if somiot2(i-2) ~= somiot2(i-2),
+      somiot2(i-2) = 0;
    end
 end
 
@@ -99,7 +99,7 @@ P = [];
 
 %Computation of probability  P of change  (at window i)
 for i=2:l-1,
-   P(i-1) =(1-omiot2(i-1));
+   P(i-1) =(1-somiot2(i-1));
 end
 
 P = [0 P 0];
@@ -182,12 +182,12 @@ end
 
 posms = [];posms = msec;pos = [];pos = mpos;
 fpos = start+pos-1+0.02*posms;
-pfpos = floor(50*pos+posms-50);
+gfpos = floor(50*pos+posms-50);
 
 bvoise = 0.14339738781836;bmusic = 0.04399754659151;amusic = 1.66349817725076;avoise = 2.32677887950291;
 
-pfpos = [1 pfpos length(kvrms)];
-l = length(pfpos)-1;
+gfpos = [1 gfpos length(kvrms)];
+l = length(gfpos)-1;
 V = [];
 Pzero = [];
 Fsp1 = [];
@@ -195,41 +195,41 @@ Fsp1 = [];
 %Classification for each segment 
 for i=1:l,
    d = 0;
-   x1 = mean(kvrms([pfpos(i):pfpos(i+1)]));
+   x1 = mean(kvrms([gfpos(i):gfpos(i+1)]));
    x = x1;
-   y = Vtaz([pfpos(i)+d:pfpos(i+1)-d]);
-   y = y/(2*max(Vta(pfpos(i)+d:pfpos(i+1)-d)) - min(Vta(pfpos(i)+d:pfpos(i+1)-d))-median(Vta(pfpos(i)+d:pfpos(i+1)-d)));
+   y = Wtaz([gfpos(i)+d:gfpos(i+1)-d]);
+   y = y/(2*max(Vta(gfpos(i)+d:gfpos(i+1)-d)) - min(Vta(gfpos(i)+d:gfpos(i+1)-d))-median(Vta(gfpos(i)+d:gfpos(i+1)-d)));
    thor(i) = 50*mean(exp(-y));
-   Pmusic(i) = (x^amusic)*exp(-x/bmusic)/(gamma(amusic+1)*bmusic^(amusic+1));
-   Pvoise(i) = 0.5*(x^avoise)*exp(-x/bvoise)/(gamma(avoise+1)*bvoise^(avoise+1));
-   sm = 0.7*median(ftm(pfpos(i):pfpos(i+1)))+0.3*mean(ftm(pfpos(i):pfpos(i+1)));
+   PPmusic(i) = (x^amusic)*exp(-x/bmusic)/(gamma(amusic+1)*bmusic^(amusic+1));
+   PPvoise(i) = 0.5*(x^avoise)*exp(-x/bvoise)/(gamma(avoise+1)*bvoise^(avoise+1));
+   sm = 0.7*median(ftm(gfpos(i):gfpos(i+1)))+0.3*mean(ftm(gfpos(i):gfpos(i+1)));
    Pspace(i) =  6*exp((-sm*sm)/(2*0.6*0.6));
-   zpos(i) = sum(exp(-10*Vtaz1([pfpos(i)+d:pfpos(i+1)-d])))/length(Vtaz1([pfpos(i)+d:pfpos(i+1)-d]));
+   zpos(i) = sum(exp(-10*Wtaz1([gfpos(i)+d:gfpos(i+1)-d])))/length(Wtaz1([gfpos(i)+d:gfpos(i+1)-d]));
    
    if zpos(i) > 0.08 | x > 3
-     Pvoise(i)  = 10;
+     PPvoise(i)  = 10;
   else
-      Pmusic(i) = (x^amusic)*exp(-x/bmusic)/(gamma(amusic+1)*bmusic^(amusic+1));
-      Pvoise(i)  = 0.5*(x^avoise)*exp(-x/bvoise)/(gamma(avoise+1)*bvoise^(avoise+1));
+      PPmusic(i) = (x^amusic)*exp(-x/bmusic)/(gamma(amusic+1)*bmusic^(amusic+1));
+      PPvoise(i)  = 0.5*(x^avoise)*exp(-x/bvoise)/(gamma(avoise+1)*bvoise^(avoise+1));
    end
    
-   V(i,:) = [Pmusic(i)  Pvoise(i)];
+   V(i,:) = [PPmusic(i)  PPvoise(i)];
    [Pmax(i) type(i)] = max(V(i,:));
       
   thor2(i) = 50*mean(exp(-4*y));
-  Pmusicg(i) = 0;
+  PPmusicg(i) = 0;
    if thor2(i) > 3.5,
-      Pvoiseg(i) = 10;
+      PPvoiseg(i) = 10;
    else
-      Pmusicg(i) = (x^amusic)*exp(-x/bmusic)/(gamma(amusic+1)*bmusic^(amusic+1));
-      Pvoiseg(i)  = 0.5*(x^avoise)*exp(-x/bvoise)/(gamma(avoise+1)*bvoise^(avoise+1));
+      PPmusicg(i) = (x^amusic)*exp(-x/bmusic)/(gamma(amusic+1)*bmusic^(amusic+1));
+      PPvoiseg(i)  = 0.5*(x^avoise)*exp(-x/bvoise)/(gamma(avoise+1)*bvoise^(avoise+1));
    end
    
-   Vg(i,:) = [Pmusicg(i)  Pvoiseg(i)];
+   Vg(i,:) = [PPmusicg(i)  PPvoiseg(i)];
    [Pmaxg(i) typeg(i)] = max(Vg(i,:));
-   Vk = (sign(Vtaz1([pfpos(i):pfpos(i+1)])));
+   Vk = (sign(Wtaz1([gfpos(i):gfpos(i+1)])));
    tempV = [];
-   tempV = Vta([pfpos(i):pfpos(i+1)]);
+   tempV = Vta([gfpos(i):gfpos(i+1)]);
    rr = max(tempV)+0.001;
    tempV1 = tempV/rr;
    Vk0 = Vk;
@@ -248,9 +248,9 @@ for i=1:l,
    end
    
    Zca = [];
-   Zca = Vk1.*(Vtaz1([pfpos(i):pfpos(i+1)]));
+   Zca = Vk1.*(Wtaz1([gfpos(i):gfpos(i+1)]));
    Pol = (ones(1,length(Vk)) -  sign(Vk)).*Vk0;        
-   VZC = Pol.*Vtaz1([pfpos(i):pfpos(i+1)]);   
+   VZC = Pol.*Wtaz1([gfpos(i):gfpos(i+1)]);   
    dVk = abs(Vk(2:length(Vk))-Vk(1:length(Vk)-1));
    Freq(i,1) = 50*sum(dVk)/(2*length(Vk)); %FSP%
    Freq(i,2) = length(Vk)/50;%duration in sec of the segment
@@ -258,34 +258,34 @@ for i=1:l,
    Freq(i,4) = zpos(i);
    Freq(i,5) = thor2(i);
    Freq(i,6) =   max(Zca);
-   Pmusicg(i) = 0;
-   Pvoiseg(i) = 0;
+   PPmusicg(i) = 0;
+   PPvoiseg(i) = 0;
    if Freq(i,1) < 0.59 & Freq(i,2) > 2.5,
-      Pmusicg(i) = 10;
+      PPmusicg(i) = 10;
    else
-      Pmusicg(i) = (x^amusic)*exp(-x/bmusic)/(gamma(amusic+1)*bmusic^(amusic+1));
-      Pvoiseg(i)  = 0.5*(x^avoise)*exp(-x/bvoise)/(gamma(avoise+1)*bvoise^(avoise+1));
+      PPmusicg(i) = (x^amusic)*exp(-x/bmusic)/(gamma(amusic+1)*bmusic^(amusic+1));
+      PPvoiseg(i)  = 0.5*(x^avoise)*exp(-x/bvoise)/(gamma(avoise+1)*bvoise^(avoise+1));
       if x > 3,
-         Pvoiseg(i) = Pvoiseg(i)+0.1;         
+         PPvoiseg(i) = PPvoiseg(i)+0.1;         
       end
       if x > 300 ,
-         Pmusicg(i) = 9;
+         PPmusicg(i) = 9;
       end
       if thor2 > 3.5
-         Pvoiseg(i) = 11;
+         PPvoiseg(i) = 11;
       end
       if max(Zca) > 280,
-         Pmusicg(i) = 11;
+         PPmusicg(i) = 11;
          max(Zca)  
       end
       if Freq(i,1) > 4.62 & Freq(i,2) > 2.5 & (thor2(i) > 0.1 | zpos(i) > 0.05),
-         Pvoiseg(i) = 12;
+         PPvoiseg(i) = 12;
       end
       if zpos(i) > 0.15 
-         Pvoiseg(i)  = 13;
+         PPvoiseg(i)  = 13;
       end
   end
-   Vg(i,:) = [Pmusicg(i)  Pvoiseg(i)];
+   Vg(i,:) = [PPmusicg(i)  PPvoiseg(i)];
    [Pmaxg(i) typeg(i)] = max(Vg(i,:));
 
 	Fsp1 = [Fsp1 Vk];  
@@ -294,18 +294,18 @@ for i=1:l,
       type(i) = 3; %silence
       typeg(i) = 3;
    end 
-   if (pfpos(i+1) - pfpos(i))/50 < 0.5 & i >= 1, % short segments
+   if (gfpos(i+1) - gfpos(i))/50 < 0.5 & i >= 1, % short segments
       type(i) = type(i-1);
    end
 end
    g = [];g1 = [];tt = [];pt = [];pm = [];ps = [];pv = [];pmf = []; 
   
 for i=1:l,
-   tt = [tt type(i)*ones(1,pfpos(i+1)-pfpos(i))];
-   pt = [pt Pmax(i)*ones(1,pfpos(i+1)-pfpos(i))];
-   pm = [pm Pmusic(i)*ones(1,pfpos(i+1)-pfpos(i))];
-   pv = [pv Pvoise(i)*ones(1,pfpos(i+1)-pfpos(i))];
-   ps = [ps Pspace(i)*ones(1,pfpos(i+1)-pfpos(i))];
+   tt = [tt type(i)*ones(1,gfpos(i+1)-gfpos(i))];
+   pt = [pt Pmax(i)*ones(1,gfpos(i+1)-gfpos(i))];
+   pm = [pm PPmusic(i)*ones(1,gfpos(i+1)-gfpos(i))];
+   pv = [pv PPvoise(i)*ones(1,gfpos(i+1)-gfpos(i))];
+   ps = [ps Pspace(i)*ones(1,gfpos(i+1)-gfpos(i))];
 end
 
 PosV = 100*sum(exp(-10*abs(tt-2*ones(1,length(tt)))))/length(tt);
@@ -318,11 +318,11 @@ l = l1;
  g = [];g1 = [];tt = [];pt = [];pm = [];ps = [];pv = [];pmf = [];
 
 for i=1:l,
-   tt = [tt typeg(i)*ones(1,pfpos(i+1)-pfpos(i))];
-   pt = [pt Pmaxg(i)*ones(1,pfpos(i+1)-pfpos(i))];
-   pm = [pm Pmusicg(i)*ones(1,pfpos(i+1)-pfpos(i))];
-   pv = [pv Pvoiseg(i)*ones(1,pfpos(i+1)-pfpos(i))];
-   ps = [ps Pspace(i)*ones(1,pfpos(i+1)-pfpos(i))];
+   tt = [tt typeg(i)*ones(1,gfpos(i+1)-gfpos(i))];
+   pt = [pt Pmaxg(i)*ones(1,gfpos(i+1)-gfpos(i))];
+   pm = [pm PPmusicg(i)*ones(1,gfpos(i+1)-gfpos(i))];
+   pv = [pv PPvoiseg(i)*ones(1,gfpos(i+1)-gfpos(i))];
+   ps = [ps Pspace(i)*ones(1,gfpos(i+1)-gfpos(i))];
 end
 l = length(tt);
 
@@ -331,19 +331,34 @@ PosMg = 100*sum(exp(-10*abs(tt-ones(1,length(tt)))))/length(tt);
 
 for k = 1:length(Vta),
    if Vta(k) < 2 | Vta(k) < 0.1*max(Vta),
-      Vtaz1(k) = 0;
+      Wtaz1(k) = 0;
    end
 end
 m = 100;
 temp = [];
 h1 = [];
-temp = Vtaz1;
+temp = Wtaz1;
 h1 = hist(temp,m);
 h1(1) = 0;
 h1 = h1/sum(h1);
 a1 = [min(temp):(max(temp)-min(temp))/m:max(temp)-(max(temp)-min(temp))/m];
 
+figure(2);
+
+subplot(2,1,1);
+plot([1:l]*(finish-start-1)/l+start,tt);
+axis([0.5 duration 0 3.5]);
+title('classification type (1 : Music, 2: Voice, 3: Silence)');
+xlabel('sec');
+subplot(2,1,2);
+plot(start+([1:length(Vta)]*duration/length(Vta)),Vta);
+axis([0 duration 0 (floor(max(Vta))+1)]);
+title('RMS');
+xlabel('sec');
+
+
 classif = tt;
+
 
 a=0; b=0; c=0; z=0;
 sz=size(classif);
