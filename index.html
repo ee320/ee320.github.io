@@ -9,45 +9,44 @@
 			.section{position: relative;width: 90%;margin: auto;padding: 2%;}
 			.subsection{position: relative; width: 98%;text-align: justify;padding: 10px;}
 			.heading{position: relative; width: 98%;text-align: left;font-size: 14px;font-weight: bold;}
-			.text{width: 95%;font-size: 12px;text-align: justify;padding: 10px 0px 10px 0px;}
+			.text{width: 95%;font-size: 15px;text-align: justify;padding: 10px 0px 10px 0px;}
 			.authors{position: relative;width: 80%;margin: auto;padding: 2%;font-style: italic;text-align: center;font-size: 12px;}
 			.image{width: 95%;font-size: 12px;text-align: left;}
 		</style>
 	</head>
 	<body>
 		<div class="container">
-			<div class="title"><font color="green" size="10">Audio Class Histogram</font></div>
+			<div class="title"><font color="brown" size="12">Audio Class Histogram</font></div>
 
 			<div class="authors">
                 <font color="black" size="2">
 				<!-- Start edit here  -->
-				<p>Ritwik Abhishek, Roll No.: 150102057, Branch: ECE</p>; &nbsp; &nbsp;
-				<p>Rana Randheer, Roll No.: 150102056, Branch: ECE</p>; &nbsp; &nbsp;
-				<p>Nayab Anjum, Roll No.: 150102039, Branch: ECE</p>; &nbsp; &nbsp;
-				<p>Nishant Gongale, Roll No.: 150102021, Branch: ECE</p>; &nbsp; &nbsp;
+				<b><p>Nishant Gongale, Roll No.: 150102021, Branch: ECE</p></b>; &nbsp; &nbsp;
+				<b><p>Rana Randheer, Roll No.: 150102056, Branch: ECE</p></b>; &nbsp; &nbsp;
+				<b><p>Nayab Anjum, Roll No.: 150102039, Branch: ECE</p></b>; &nbsp; &nbsp;
+				<b><p>Ritwik Abhishek, Roll No.: 150102057, Branch: ECE</p></b>; &nbsp; &nbsp;
+
 				<!-- Stop edit here -->
                </font>
 			</div>
 
 
 			<div class="section">
-				<div class="heading">Abstract</div>
+				<div class="heading"><font color="black" size="4">Abstract </div>
 				<div class="text">
-
 					<!-- Start edit here  -->
-					A speech, music, silence, noise discrimination is presented in this project. The proposed algorithm needs no training phase,. and it classifies audio stream into 4 classes- speech, music, silence and noise.
+					A technique for Audio classification is presented in this project. The proposed algorithm needs no training phase,. and it classifies audio stream into 3 classes- speech, music, and silence.
 					<!-- Stop edit here -->
-
 				</div>
 			</div>
 
 			<div class="section">
-				<div class="heading">1. Introduction</div>
+				<div class="heading"><font color="black" size="4">1. Introduction</div>
 				<div class="text">
 
 					<!-- Start edit here  -->
 					 Over the last several years, major efforts have been made to develop methods for extracting information from audio visual media
-					 In this project we are concentrating on classification of an audio signal into vocal, music and silence and we are creating audio class histogram for the same. 
+					 In this project we are concentrating on classification of an audio signal into music, speech and silence and we are creating audio class histogram for the same. 
 
 					<!-- Stop edit here -->
 
@@ -58,7 +57,7 @@
 					<div class="text">
 
 						<!-- Start edit here  -->
-							Given an audio file, we have to extract features and use them to segment and classsify the audio data into speech, music, silence and noise.
+							Given an audio file, we have to extract features and use them to segment and classsify the audio data into speech, music, and silence
 							And to plot a histogram for the same
 						<!-- Stop edit here -->
 
@@ -70,7 +69,7 @@
 					<div class="image">
 
 						<!-- Start edit here  -->
-						            Block diagram of the system.
+						           
 						<img src="Pictures/example.png" alt="This text displays when the image is umavailable" width="700px" height="400px"/>
 						<!-- Stop edit here -->
 
@@ -81,24 +80,18 @@
 					<div class="text">
 
 						<!-- Start edit here  -->
-						[1] C. Panagiotakis and G. Tziritas, a speech/music discriminator based on rms and zero-crossings, ieee transactions on multimedia, vol. 7, no. 1, feb. 2005.
+						<p>
+						[1] C. Panagiotakis and G. Tziritas, a speech/music discriminator based on rms and zero-crossings, ieee transactions on multimedia, vol. 7, no. 1, feb. 2005.</p>
 						 <p>
- 						[2]  C. Panagiotakis and G. Tziritas, a speech/music discriminator based on rms and zero-crossings, European singnal processing conference, 2002</p>									<!-- Stop edit here -->
+ 						[2]  B. Kedem, Spectral analysis and discrimination by zero-crossings, Proc. IEEE, vol. 74</p>
+ 						<p>
+						[3] C.Panagiotakis and G. Tziritas, a speech/music discriminator based on rms and zero-crossing,ieee transactions  2002.</p>									<!-- Stop edit here -->
 
 					</div>
 				</div>
+				
 				<div class="subsection">
-					<div class="heading">1.4 Proposed Approach</div>
-					<div class="text">
-
-						<!-- Start edit here  -->
-						In the first step the audio input is initially cut into overlapping frames of audio samples and for each frame parametric feature vectors are extracted. First silence segments are extracted from audio stream by using energy, and for differentiating between music and speech we are using 5 feature vectors which are derived from RMS and ZCR.The feature vector sequence is afterwards driven to the segmentation stage, where the feature vectors used are- Normalized RMS variance, probability of null zero-crossings,joint RMS/ZC measure,Void intervals frequency and Maximal mean frequency.
-						<!-- Stop edit here -->
-
-					</div>
-				</div>
-				<div class="subsection">
-					<div class="heading">1.5 Report Organization</div>
+					<div class="heading">1.4 Report Organization</div>
 					<div class="text">
 
 						<!-- Start edit here  -->
@@ -110,18 +103,91 @@
 			</div>
 
 			<div class="section">
-				<div class="heading">2. Proposed Approach</div>
+				<div class="heading"><font color="black" size="4">2. Proposed Approach</div>
 				<div class="text">
 
 					<!-- Start edit here  -->
-					Write something here.
+					In the first step given audio has been segmented into frames of 20ms each with an overlap of 10ms. Then feature vectors of each segment is extracted. First silence segments were identified by using minimum energy threshold, and for differentiating between music and speech we are using 5 feature vectors. The feature vectors used are given below 
+					<div class="subsection">
+						<div class="heading">Normalized RMS variance</div>
+							<div class="text">
+
+						<!-- Start edit here  -->
+						It is ratio of 'varience of RMS' to 'Square of RMS mean', In more than 88% voice audio files this feature vector has value more than 0.24
+						<!-- Stop edit here -->
+
+						</div>
+					</div>
+
+					<div class="subsection">
+						<div class="heading">Probability of null zero-crossings</div>
+							<div class="text">
+
+						<!-- Start edit here  -->
+						In the case silent interval the number of Zero crossings is null. In speech there are always some silent intervals. This feature vector has value more than 0.1 for speech.
+						<!-- Stop edit here -->
+
+						</div>
+					</div>
+
+					<div class="subsection">
+						<div class="heading">Joint RMS/ZC measure</div>
+							<div class="text">
+
+						<!-- Start edit here  -->
+						RMS and ZC are somewhat related for speech signals but not for music. So we have defined a function which tells about correlation between 
+						RMS and ZC. It is close to zero for speech
+						<!-- Stop edit here -->
+
+						</div>
+					</div>
+
+					<div class="subsection">
+						<div class="heading">Silent intervals frequency</div>
+							<div class="text">
+
+						<!-- Start edit here  -->
+						It is frequency at which silent intervals are detected in audio file. Music has less silent interval in between hence it is usually lower for music. Higher probabilty of music if it is less than 0.6.
+						<!-- Stop edit here -->
+
+						</div>
+					</div>
+					<div class="subsection">
+						<div class="heading">Maximal mean frequency</div>
+							<div class="text">
+
+						<!-- Start edit here  -->
+						Voice waveforms are bandlimited by 3.2Khz. Hence their mean is less.
+						<!-- Stop edit here -->
+
+						</div>
+					</div>
+
+
+					<div class="image">
+
+						<!-- Start edit here  -->
+						            <p>          RMS values for Music and Speech</p>
+						<img src="Pictures/RMS.png" alt="This text displays when the image is umavailable" width="700px" height="400px"/>
+						<!-- Stop edit here -->
+
+					</div>
+
+					<div class="image">
+
+						<!-- Start edit here  -->
+						           
+						<img src="Pictures/chart.png" alt="This text displays when the image is umavailable" width="600px" height="400px"/>
+						<!-- Stop edit here -->
+
+					</div>
 					<!-- Stop edit here -->
 
 				</div>
 			</div>
 
 			<div class="section">
-				<div class="heading">3. Experiments &amp; Results</div>
+				<div class="heading"><font color="black" size="4">3. Experiments &amp; Results</div>
 				<div class="subsection">
 					<div class="heading">3.1 Dataset Description</div>
 					<div class="text">
@@ -129,29 +195,45 @@
 						<!-- Start edit here  -->
 						We collected from various resources from internet, we also generated some dataset. Our dataset includes various genre of music, voice samples of male and female.
 						<!-- Stop edit here -->
-
+						The test are 
+						<a href="https://l.facebook.com/l.php?u=https%3A%2F%2Fwww.dropbox.com%2Fsh%2Fb5mjp4nczez1zkr%2FAAASldWxzGHYRTVXUPLVzNvva%3Fdl%3D0&h=ATOfjDoSaDFNWS2L-QBW2y4e56pIlgafHGQ7_b020fdekvERTcOpxXNxRkYti-3nDSqam0WsIsGV0d0s4sPmDRJtA2Hxix3z7Og0t9d70OR7YNe2Li2NVF0UYDg5c5zB4p9O2Q">here</a>
+						<p>
+							The codes are 
+							<a href="https://github.com/ee320/ee320.github.io">here</a>
+						</p>
 					</div>
 				</div>
 				<div class="subsection">
-					<div class="heading">3.2 Discussion</div>
+					<div class="heading">3.2 Results</div>
 					<div class="text">
 
 						<!-- Start edit here  -->
-						For above mentioned dataset we are getting an accuracy of around 85%.
+						The output is shown as a histogram. For a given audio file of 67 seconds, having music in 34 second, voice in 13 seconds and 20 seconds of silence.
 						<!-- Stop edit here -->
+						<div class="image">
+
+						<!-- Start edit here  -->
+						           
+						<img src="Pictures/result.png" alt="This text displays when the image is umavailable" width="600px" height="450px"/>
+						<!-- Stop edit here -->
+						<p>1 denotes music</p>     
+						<p>2 denotes voice </p>
+						<p>3 denotes silence</p>
+
+					</div>
 
 					</div>
 				</div>
 			</div>
 
 			<div class="section">
-				<div class="heading">4. Conclusions</div>
+				<div class="heading"><font color="black" size="4">4. Conclusions</div>
 				<div class="subsection">
 					<div class="heading">4.1 Summary</div>
 					<div class="text">
 
 						<!-- Start edit here  -->
-						Write something here.
+						We got an accuracy of more than 90 percent
 						<!-- Stop edit here -->
 
 					</div>
@@ -161,7 +243,11 @@
 					<div class="text">
 
 						<!-- Start edit here  -->
-						Write something here.
+						In the future, the methods introduced here could be extended
+to a more detailed characterization and description of audio.
+They may be used at the first hierarchical level of a classifier, and
+then continue by classifying into more specific categories, for
+example, classifying the music genre or identifying the speaker.
 						<!-- Stop edit here -->
 
 					</div>
